@@ -6,6 +6,10 @@ enum GameMode {
     End,
 }
 
+const SCREEN_WIDTH: i32 = 80;
+const SCREEN_HEIGHT: i32 = 50;
+const FRAME_DURATION: f32 = 75.0;
+
 struct Player {
     x: i32,
     y: i32,
@@ -36,15 +40,23 @@ impl Player {
             self.y = 0;
         }
     }
+
+    fn flap(&mut self) {
+        self.velocity = -2.0;
+    }
 }
 
 struct State {
+    player: Player,
+    frame_time: f32,
     mode: GameMode,
 }
 
 impl State {
     fn new() -> Self {
         State {
+            player: Player::new(5, 25),
+            frame_time: 0.0,
             mode: GameMode::Menu,
         }
     }
@@ -55,6 +67,8 @@ impl State {
     }
 
     fn restart(&mut self) {
+        self.player = Player::new(5, 25);
+        self.frame_time = 0.0;
         self.mode = GameMode::Playing;
     }
 
